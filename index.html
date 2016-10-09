@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<link rel="stylesheet" href="index3.css">
+
+<style type="text/css">  
+
+    .si-wrapper {
+        display: inline-block;
+        position: relative;
+    }
+
+    .speech-input {
+        margin: 0;
+    }
+
+    .si-wrapper button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 18px;
+        width: 18px;
+        margin: 0;
+        border: 0;
+        padding: 0;
+        background: none;
+        font: 0/0 a;
+    }
+
+    .si-mic,
+    .si-mic:after,
+    .si-holder,
+    .si-holder:before,
+    .si-holder:after {
+        position: absolute;
+        background: #333;
+    }
+
+    /* Microphone icon */
+    .si-mic {
+        display: block;
+        height: 25%; /* 8px / 32px */
+        top: 9.375%; /* 3px / 32px */
+        left: 37.5%; /* 12px / 32px */
+        right: 37.5%; /* 12px / 32px */
+        -webkit-border-radius: 99px 99px 0 0;
+        -moz-border-radius: 99px 99px 0 0;
+        border-radius: 99px 99px 0 0;
+    }
+
+    .si-mic:before,
+    .si-mic:after,
+    .si-holder {
+        -webkit-border-radius: 0 0 99px 99px;
+        -moz-border-radius: 0 0 99px 99px;
+        border-radius: 0 0 99px 99px;
+    }
+
+    .si-mic:before {
+        position: absolute;
+        z-index: 1;
+        content: '';
+        width: 150%; /* 12px / 8px */
+        height: 137.5%; /* 11px / 8px */
+        top: 100%; /* 8px / 8px */
+        left: -25%; /* -2px / 8px */
+        background: #fff;
+    }
+
+    .si-mic:after {
+        z-index: 1;
+        content: '';
+        width: 100%; /* 10px / 10px */
+        height: 100%; /* 10px / 10px */
+        top: 110%; /* 11px / 10px */
+        left: 0;
+    }
+
+    .si-holder {
+        display: block;
+        height: 40.625%; /* 13px / 32px */
+        width: 50%; /* 16px / 32px */
+        left: 25%; /* 8px / 32px */
+        top: 37.5%; /* 12px / 32px */
+    }
+
+    .si-holder:after {
+        content: '';
+        width: 66.666%; /* 8px / 16px */
+        height: 18.182%; /* 2px / 13px */
+        bottom: -30.769%; /* -4px / 13px */
+        left: 16.667%; /* 2px / 16px */
+    }
+
+    .si-holder:before {
+        content: '';
+        width: 33.333%; /* 4px / 16px */
+        height: 27.273%; /* 3px / 13px */
+        top: 92.308%; /* 12px / 13px */
+        left: 33.333%; /* 4px / 16px */
+    }
+    
+    .speech-input {
+        font-size: 2em;
+        padding: .1em;
+    }
+    
+    svg {
+        position: absolute;
+        z-index: 1;
+        left: 50px;
+        top: 25px;
+        height: 170px;
+    }
+    html {
+        cursor:copy;
+        margin-left: 100px;
+        margin-top: 50px;
+    }
+    
+    #bg {
+        max-width:100%;
+        position: absolute;
+        top:0px;
+        left:0px;
+        z-index: -1;
+        opacity:0.95;
+    }
+
+    input:hover {
+        opacity:1;
+    }
+
+    h1 {
+        color:yellowgreen;
+        text-align:center;
+    }
+    
+    p , #em {
+        color:aqua;
+        font-size:20px;
+    }
+    
+    body {
+        background-color:#006600;
+    }
+    
+    img {
+        position: absolute;
+        z-index: 2;
+        height: 50px;
+    }
+    
+    .changeSize {
+        background: #3498db;
+        background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+        background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+        background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+        background-image: -o-linear-gradient(top, #3498db, #2980b9);
+        background-image: linear-gradient(to bottom, #3498db, #2980b9);
+        -webkit-border-radius: 27;
+        -moz-border-radius: 27;
+        border-radius: 27px;
+        font-family: Arial;
+        color: #ffffff;
+        font-size: 20px;
+        padding: 10px 20px 10px 20px;
+        max-width:110px;
+        text-align: center;
+        position: static;
+        top: 0;
+        right: 0;
+        float: right;
+    }
+    .changeSize:hover {
+        background: #3cb0fd;
+        background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+        text-decoration: none;
+    }
+
+</style>
+
+<title>Saeid's Webpage</title>
+
+<body id="bodyid">
+    
+    <span id="header">
+    <div id="container">
+    <div id="big" class="changeSize">Bigger font</div>
+    <div id="small" class="changeSize">Smaller font</div>
+    </div>
+    
+    <svg height="130" width="500">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:rgb(255,155,0);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="200" cy="60" rx="185" ry="55" fill="url(#grad1)" />
+      <text fill="#ffffff" font-size="45" font-family="Verdana" x="50" y="86">    
+        </text>
+    Sorry, your browser does not support inline SVG.
+    </svg>
+    
+    <a href="http://www.stcloudstate.edu/"><img src="http://www.stcloudstate.edu/_files/images/header-logo.png"></a>
+    <!--<img src="bg.jpg" id="bg" alt="">-->
+    <br><br><br><br>
+    </span>
+    <div id="arti">
+    <h1 id="nam">Welcome to my webpage</h1>
+    <p id="time"></p>
+    <p>I am majoring in Computer Science, and I like techonology.</p><p>I made this webpage from scratch. You may send me email to make this page better and add some features.</p>
+    <a href="mailto:msnajdihejazi@stcloudstate.edu" id="em">My email</a>
+    </div>
+    
+    <br><br>
+    <input type="text" class="speech-input" id="mytext" placeholder="Click and say a color!">
+    <br>
+</body>
+
+<script>
+    
+    $("#big").click(function() {
+         $("#bodyid").find('*').not('.changeSize').css("font-size", "+=2px");
+    });
+    
+    $("#small").click(function() {
+         $("#bodyid").find('*').not('.changeSize').css("font-size", "-=2px");
+    });
+
+(function() {
+	'use strict';
+
+	// check for support (webkit only)
+	if (! ('webkitSpeechRecognition' in window) ) return;
+
+	var talkMsg = 'start talking';
+
+	// seconds to wait for more input after last
+	var patience = 2;
+
+	function capitalize(str) {
+		return str.length ? str[0].toUpperCase() + str.slice(1) : str;
+	}
+
+	var inputEls = document.getElementsByClassName('speech-input');
+    
+	[].forEach.call(inputEls, function(inputEl) {
+		// create wrapper
+		var wrapper = document.createElement('div');
+		wrapper.classList.add('si-wrapper');
+
+		// create mic button
+		var micBtn = document.createElement('button');
+		micBtn.classList.add('si-btn');
+		micBtn.textContent = 'speech input';
+		var micIcon = document.createElement('span');
+		var holderIcon = document.createElement('span');
+		micIcon.classList.add('si-mic');
+		holderIcon.classList.add('si-holder');
+		micBtn.appendChild(micIcon);
+		micBtn.appendChild(holderIcon);
+
+		// gather inputEl data
+		var nextNode = inputEl.nextSibling;
+		var parent = inputEl.parentNode;
+		var inputHeight = inputEl.offsetHeight;
+		var inputRightBorder = parseInt(getComputedStyle(inputEl).borderRightWidth, 10);
+		var buttonSize = 0.8 * inputHeight;
+
+		// append mic and input to the wrapper
+		wrapper.appendChild(parent.removeChild(inputEl));
+		wrapper.appendChild(micBtn);
+
+		// size and position of mic and input
+		micBtn.style.top = 0.1 * inputHeight + 'px';
+		micBtn.style.height = micBtn.style.width = buttonSize + 'px';
+		inputEl.style.paddingRight = buttonSize - inputRightBorder + 'px';
+
+		// append wrapper where input was
+		parent.insertBefore(wrapper, nextNode);
+
+		// setup recognition
+		var finalTranscript = '';
+		var recognizing = false;
+		var timeout;
+		var oldPlaceholder = null;
+		var recognition = new webkitSpeechRecognition();
+		recognition.continuous = true;
+
+		function restartTimer() {
+			timeout = setTimeout(function() {
+				recognition.stop();
+			}, patience * 1000);
+		}
+
+		recognition.onstart = function() {
+			oldPlaceholder = inputEl.placeholder;
+			inputEl.placeholder = talkMsg;
+			recognizing = true;
+			micBtn.classList.add('listening');
+			restartTimer();
+		};
+
+		recognition.onend = function() {
+			recognizing = false;
+			clearTimeout(timeout);
+			micBtn.classList.remove('listening');
+			if (oldPlaceholder !== null) inputEl.placeholder = oldPlaceholder;
+		};
+
+		recognition.onresult = function(event) {
+			clearTimeout(timeout);
+			for (var i = event.resultIndex; i < event.results.length; ++i) {
+				if (event.results[i].isFinal) {
+					finalTranscript += event.results[i][0].transcript;
+				}
+			}
+			finalTranscript = capitalize(finalTranscript);
+			inputEl.value = finalTranscript;
+			restartTimer();
+            
+            console.log(finalTranscript);
+            document.body.style.backgroundColor = finalTranscript;
+            if (finalTranscript.indexOf('Large') >= 0  || finalTranscript.indexOf('Big') >= 0)
+                {
+                    $("#arti").find('*').css("font-size", "+=2px");
+                }
+            if (finalTranscript.indexOf("Small") >= 0)
+                {
+                    $("#arti").find('*').css("font-size", "-=2px");
+                }
+            if (finalTranscript.indexOf("Remove") >= 0)
+                {
+                    $('.speech-input').parent().siblings().hide()
+                }
+            if (finalTranscript.indexOf("Come back") >= 0)
+                {
+                    $('.speech-input').parent().siblings().not('script').show();
+                }
+		};
+
+		micBtn.addEventListener('click', function(event) {
+			event.preventDefault();
+			if (recognizing) {
+				recognition.stop();
+				return;
+			}
+			inputEl.value = finalTranscript = '';
+			recognition.start();
+		}, false);
+	});
+})();
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        var person = prompt("Please enter your name", "");
+        if (person != null) {
+            $("#nam").append(document.createTextNode(", "+person+"!"));
+        }
+    });
+</script>
